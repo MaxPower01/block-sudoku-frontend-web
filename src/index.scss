@@ -1,0 +1,119 @@
+:root {
+  width: 100%;
+  height: 100%;
+  font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  line-height: normal;
+  font-weight: 400;
+  color-scheme: dark;
+  color: rgba(255, 255, 255, 0.87);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+  --bodyBackgroundColor: #242424;
+  background-color: var(--bodyBackgroundColor);
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  font-family: 'Source Sans Pro', sans-serif;
+  background-color: var(--bodyBackgroundColor);
+}
+
+#root {
+  width: 100%;
+  height: 100%;
+  background-color: var(--bodyBackgroundColor);
+}
+
+@mixin highlighted-cell-content {
+  box-shadow: inset 1px 1px 4px rgba(0, 0, 0, 0.25), inset 0 0 9999px 9999px rgba(0, 255, 0, 0.25);
+}
+
+.Cell__Content {
+  transition: box-shadow 0.5s ease;
+
+  &.Cell__Content--front-layer {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    background: linear-gradient(179.94deg, #F0FF99 0%, #B1C87E 100%);
+  }
+}
+
+.Grid__Cell {
+  .Cell__Content {
+    &.Cell__Content--back-layer {
+      background: linear-gradient(179.94deg, hsl(89, 21%, 33%) 0%, hsl(89, 21%, 41%) 100%);
+      opacity: 0.5;
+    }
+
+    &.Cell__Content--front-layer {
+      z-index: 1;
+    }
+  }
+
+  &.Grid__Cell--alternate-box {
+    .Cell__Content {
+      &.Cell__Content--back-layer {
+        background: linear-gradient(179.94deg, hsl(87, 22%, 30%) 0%, hsl(87, 21%, 22%) 100%);
+      }
+    }
+  }
+
+  &.Grid__Cell--hovered {
+    .Cell__Content {
+      &.Cell__Content--front-layer {
+        opacity: 0.5;
+      }
+
+      &.Cell__Content--back-layer {
+        opacity: 0;
+      }
+    }
+  }
+
+  &.Grid__Cell--highlighted {
+    .Cell__Content {
+      @include highlighted-cell-content;
+    }
+  }
+
+  &[data-filled="true"] {
+    .Cell__Content {
+      background: linear-gradient(179.94deg, #F0FF99 0%, #B1C87E 100%);
+
+      &.Cell__Content--front-layer {
+        opacity: 1;
+      }
+
+      &.Cell__Content--back-layer {
+        opacity: 0;
+      }
+    }
+  }
+
+  // &:not([data-filled="true"]) {
+  //   .Cell__Content {
+  //     box-shadow: inset 1px 1px 4px rgba(0, 0, 0, 0.25);
+  //   }
+  // }
+}
+
+.Block__Cell {
+  &.Block__Cell--alive {
+    .Cell__Content {
+      background: linear-gradient(179.94deg, #F0FF99 0%, #B1C87E 100%);
+    }
+  }
+}
+.Block--invalid {
+  opacity: 0.25 !important;
+}
