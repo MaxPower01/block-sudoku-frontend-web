@@ -5,6 +5,7 @@ import Confetti from "react-confetti";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import TrophySVG from "../../../assets/trophy-01.svg";
+import { Path } from "../../../utils/enums";
 import { resetLevelState } from "../state/slice";
 
 export default function GameOverDialog(props: {
@@ -15,7 +16,7 @@ export default function GameOverDialog(props: {
   const navigate = useNavigate();
   const handleButtonClick = () => {
     dispatch(resetLevelState());
-    navigate("/home");
+    navigate(Path.Home);
   };
 
   const { score, isHighestScore } = props;

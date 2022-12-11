@@ -6,6 +6,7 @@ import Home from "../../../pages/Home";
 import Leaderboard from "../../../pages/Leaderboard";
 import Levels from "../../../pages/Levels";
 import Settings from "../../../pages/Settings";
+import { Path } from "../../../utils/enums";
 import BottomBar from "../../navbars/components/BottomBar";
 import TopBar from "../../navbars/components/TopBar";
 import StoreProvider from "../../store/components/StoreProvider";
@@ -31,13 +32,13 @@ export default function App() {
             }}
           >
             <Routes>
-              <Route path="" element={<Navigate replace to="/home" />} />
-              <Route path="*" element={<Navigate replace to="/home" />} />
-              <Route path="/home" element={<Home />} />
-              <Route path="/arcade" element={<Arcade />} />
-              <Route path="/levels" element={<Levels />} />
-              <Route path="/settings" element={<Settings />} />
-              <Route path="/leaderboard" element={<Leaderboard />} />
+              <Route path="" element={<Navigate replace to={Path.Home} />} />
+              <Route path="*" element={<Navigate replace to={Path.Home} />} />
+              <Route path={Path.Home} element={<Home />} />
+              <Route path={Path.Arcade} element={<Arcade />} />
+              <Route path={Path.Levels} element={<Levels />} />
+              <Route path={Path.Settings} element={<Settings />} />
+              <Route path={Path.Leaderboard} element={<Leaderboard />} />
             </Routes>
           </Container>
           <BottomBar />

@@ -5,7 +5,7 @@ import AppBar from "@mui/material/AppBar";
 import IconButton from "@mui/material/IconButton";
 import Toolbar from "@mui/material/Toolbar";
 import { useNavigate } from "react-router-dom";
-import { CSSBreakpoint } from "../../../utils/enums";
+import { CSSBreakpoint, Path } from "../../../utils/enums";
 
 export default function BottomBar() {
   const navigate = useNavigate();
@@ -34,7 +34,7 @@ export default function BottomBar() {
           <IconButton
             color="inherit"
             sx={iconButtonStyle}
-            onClick={() => navigate("/home")}
+            onClick={() => navigate(Path.Home)}
           >
             <HomeIcon />
             <Typography variant="button" sx={iconButtonLabelStyle}>
@@ -44,7 +44,7 @@ export default function BottomBar() {
           <IconButton
             color="inherit"
             sx={iconButtonStyle}
-            onClick={() => navigate("/levels")}
+            onClick={() => navigate(Path.Levels)}
           >
             <TimelineIcon />
             <Typography variant="button" sx={iconButtonLabelStyle}>

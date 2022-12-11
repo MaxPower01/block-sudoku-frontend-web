@@ -13,6 +13,7 @@ import {
   resetLevelState,
   selectHasLevelInProgress,
 } from "../modules/level/state/slice";
+import { Path } from "../utils/enums";
 
 export default function Home() {
   const navigate = useNavigate();
@@ -23,7 +24,7 @@ export default function Home() {
 
   const startNewGame = () => {
     dispatch(resetLevelState());
-    navigate("/arcade");
+    navigate(Path.Arcade);
   };
 
   const handleNewGameButtonClick = useCallback(() => {
@@ -56,7 +57,7 @@ export default function Home() {
           {hasLevelInProgress ? (
             <Button
               onClick={() => {
-                navigate("/arcade");
+                navigate(Path.Arcade);
               }}
               variant={"contained"}
             >

@@ -6,7 +6,7 @@ import AppBar from "@mui/material/AppBar";
 import IconButton from "@mui/material/IconButton";
 import Toolbar from "@mui/material/Toolbar";
 import { useNavigate } from "react-router-dom";
-import { CSSBreakpoint } from "../../../utils/enums";
+import { CSSBreakpoint, Path } from "../../../utils/enums";
 
 export default function TopBar() {
   const navigate = useNavigate();
@@ -44,7 +44,7 @@ export default function TopBar() {
             color="inherit"
             aria-label="menu"
             sx={{ mr: 2 }}
-            onClick={() => navigate("/leaderboard")}
+            onClick={() => navigate(Path.Leaderboard)}
           >
             <EmojiEventsIcon />
           </IconButton>
@@ -53,7 +53,7 @@ export default function TopBar() {
             edge="start"
             color="inherit"
             aria-label="menu"
-            onClick={() => navigate("/settings")}
+            onClick={() => navigate(Path.Settings)}
           >
             <SettingsIcon />
           </IconButton>

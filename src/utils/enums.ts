@@ -36,3 +36,12 @@ export enum SliceName {
   App = "app",
   Level = "level",
 }
+
+export enum Path {
+  Root = "/block-sudoku-frontend-web",
+  Home = "/block-sudoku-frontend-web/home",
+  Arcade = "/block-sudoku-frontend-web/arcade",
+  Levels = "/block-sudoku-frontend-web/levels",
+  Settings = "/block-sudoku-frontend-web/settings",
+  Leaderboard = "/block-sudoku-frontend-web/leaderboard",
+}
