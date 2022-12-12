@@ -10,7 +10,8 @@
     "build": "tsc && vite build",
     "preview": "vite preview",
     "host": "vite --host",
-    "commitDist": "git subtree push --prefix dist origin gh-pages"
+    "commitDist": "git commit -m \"Adding dist\"",
+    "pushDist": "git subtree push --prefix dist origin gh-pages"
   },
   "dependencies": {
     "@animxyz/core": "^0.6.6",
