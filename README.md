@@ -2,11 +2,9 @@
 
 This is the web frontend for the block-sudoku project.
 
-# Development
+# Deployment
 
-## Publish
-
-The project is currently published to GitHub Pages using the `gh-pages` branch. Note that the `gh-pages` branch is not a regular branch, but a subtree of the `main` branch that only contains the `dist` subdirectory. This is done to make it easier to publish the project to GitHub Pages.
+The project is currently hosted on GitHub Pages at https://maxpower01.github.io/block-sudoku-frontend-web/ using the `gh-pages` branch. Note that the `gh-pages` branch is not a regular branch, but a subtree of the `main` branch that only contains the `dist` subdirectory. This is done to make it easier to publish the project to GitHub Pages.
 
 **Steps to publish:**
 
