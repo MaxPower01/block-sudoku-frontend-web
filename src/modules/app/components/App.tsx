@@ -1,6 +1,6 @@
 import Container from "@mui/material/Container";
 import CssBaseline from "@mui/material/CssBaseline";
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { MemoryRouter, Navigate, Route, Routes } from "react-router-dom";
 import Arcade from "../../../pages/Arcade";
 import Home from "../../../pages/Home";
 import Leaderboard from "../../../pages/Leaderboard";
@@ -17,7 +17,7 @@ export default function App() {
     <StoreProvider>
       <ThemeProvider>
         <CssBaseline />
-        <BrowserRouter>
+        <MemoryRouter>
           <TopBar />
           <Container
             component="main"
@@ -42,7 +42,7 @@ export default function App() {
             </Routes>
           </Container>
           <BottomBar />
-        </BrowserRouter>
+        </MemoryRouter>
       </ThemeProvider>
     </StoreProvider>
   );
