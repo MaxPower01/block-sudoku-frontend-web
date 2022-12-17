@@ -18,7 +18,11 @@ npm run build
 
 3. Push the changes to the `main` branch.
 
-4. Publish the subdirectory `dist` to the `gh-pages` branch.
+4. Publish the subdirectory `dist` to the `gh-pages` branch using either of the following commands:
+
+```bash
+npm run deploy
+```
 
 ```bash
 git subtree push --prefix dist https://github.com/MaxPower01/block-sudoku-frontend-web.git gh-pages
