@@ -29,6 +29,13 @@
 			"problemMatcher": [],
 			"label": "npm: install",
 			"detail": "install dependencies from package"
+		},
+		{
+			"type": "npm",
+			"script": "deploy",
+			"problemMatcher": [],
+			"label": "npm: deploy",
+			"detail": "gh-pages -d dist"
 		}
 	]
 }
