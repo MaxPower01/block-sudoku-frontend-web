@@ -8,6 +8,7 @@ import * as React from "react";
 import { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import TrophySVG from "../assets/trophy-01.svg";
 import { selectHighScores } from "../modules/app/state/slice";
 import {
   resetLevelState,
@@ -45,11 +46,25 @@ export default function Home() {
         <Typography variant="h3" textAlign={"center"}>
           Block Sudoku
         </Typography>
-        <Stack spacing={0}>
+        <Stack spacing={1}>
           <Typography variant="body2" textAlign={"center"}>
-            Meilleur score de tous les temps
+            &nbsp;Meilleur score de tous les temps
           </Typography>
           <Typography variant="h4" textAlign={"center"}>
+            {highScores.allTime.score > 0 ? (
+              <>
+                <img
+                  src={TrophySVG}
+                  alt="Trophy"
+                  style={{
+                    width: "1em",
+                    height: "auto",
+                    display: "inline-block",
+                  }}
+                />
+                &nbsp;
+              </>
+            ) : null}
             {highScores.allTime.score}
           </Typography>
         </Stack>
