@@ -8,7 +8,7 @@ import * as React from "react";
 import { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { selectHighestScore } from "../modules/app/state/slice";
+import { selectHighScores } from "../modules/app/state/slice";
 import {
   resetLevelState,
   selectHasLevelInProgress,
@@ -18,7 +18,7 @@ import { Path } from "../utils/enums";
 export default function Home() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const highestScore = useSelector(selectHighestScore);
+  const highScores = useSelector(selectHighScores);
   const hasLevelInProgress = useSelector(selectHasLevelInProgress);
   const [newGameDialogOpened, setNewGameDialogOpened] = React.useState(false);
 
@@ -50,7 +50,7 @@ export default function Home() {
             Meilleur score de tous les temps
           </Typography>
           <Typography variant="h4" textAlign={"center"}>
-            {highestScore}
+            {highScores.allTime.score}
           </Typography>
         </Stack>
         <Stack spacing={1}>

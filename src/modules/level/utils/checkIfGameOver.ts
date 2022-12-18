@@ -1,7 +1,7 @@
 import BlockModel from "../../block/models/BlockModel";
 import GridModel from "../../grid/models/GridModel";
 
-export default function checkIfGameIsOver(params: {
+export default function checkIfGameOver(params: {
   grid: GridModel;
 }): Promise<boolean> {
   return new Promise((resolve) => {

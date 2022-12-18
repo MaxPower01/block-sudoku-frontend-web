@@ -74,9 +74,9 @@ body {
         opacity: 0.5;
       }
 
-      &.Cell__Content--back-layer {
-        opacity: 0;
-      }
+      // &.Cell__Content--back-layer {
+      //   opacity: 0;
+      // }
     }
   }
 
@@ -94,17 +94,11 @@ body {
         opacity: 1;
       }
 
-      &.Cell__Content--back-layer {
-        opacity: 0;
-      }
+      // &.Cell__Content--back-layer {
+      //   opacity: 0;
+      // }
     }
   }
-
-  // &:not([data-filled="true"]) {
-  //   .Cell__Content {
-  //     box-shadow: inset 1px 1px 4px rgba(0, 0, 0, 0.25);
-  //   }
-  // }
 }
 
 .Block__Cell {
@@ -114,6 +108,32 @@ body {
     }
   }
 }
+
 .Block--invalid {
   opacity: 0.25 !important;
+}
+
+.ScoreUpdateSnackbar {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+  font-size: 2rem;
+  font-weight: bold;
+  color: white;
+  text-align: center;
+  pointer-events: none;
+  text-shadow: 0 0 0.5rem black;
+  transition: opacity 0.35s ease-in-out, transform 0.35s ease-in-out;
+  opacity: 0;
+}
+
+.ScoreUpdateSnackbar--visible {
+  opacity: 1;
+}
+
+.ScoreUpdateSnackbar--hidden {
+  opacity: 0;
+  transform: translate(-50%, -100px);
 }

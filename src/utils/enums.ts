@@ -45,3 +45,16 @@ export enum Path {
   Settings = "/block-sudoku-frontend-web/settings",
   Leaderboard = "/block-sudoku-frontend-web/leaderboard",
 }
+
+/**
+ * Note that the order of the enum values is important.
+ * The order is used to determine the time frame of the high score.
+ * The higher the value, the longer the time frame.
+ */
+export enum TimeFrame {
+  Day = "day",
+  Week = "week",
+  Month = "month",
+  Year = "year",
+  AllTime = "allTime",
+}

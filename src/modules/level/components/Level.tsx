@@ -4,12 +4,14 @@ import {
   DragMoveEvent,
   DragStartEvent,
 } from "@dnd-kit/core";
-import { Box, Stack } from "@mui/material";
+import { Box, Button, Stack } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import TrophySVG from "../../../assets/trophy-01.svg";
 import { PARAMS } from "../../../utils/constants";
-import { selectHighestScore, updateHighestScore } from "../../app/state/slice";
+import { TimeFrame } from "../../../utils/enums";
+import { selectHighScores, updateHighScores } from "../../app/state/slice";
 import Block from "../../block/Block";
 import BlockModel from "../../block/models/BlockModel";
 import getRandomIndexes from "../../block/utils/getRandomIndexes";
@@ -17,17 +19,20 @@ import hideBlock from "../../block/utils/hideBlock";
 import Grid from "../../grid/components/Grid";
 import GridModel from "../../grid/models/GridModel";
 import { selectLevelState, updateLevelState } from "../state/slice";
-import checkIfGameIsOver from "../utils/checkIfGameIsOver";
+import checkIfGameOver from "../utils/checkIfGameOver";
 import showBlocks from "../utils/showBlocks";
 import GameOverDialog from "./GameOverDialog";
 
 export default function Level() {
   const levelState = useSelector(selectLevelState);
-  const highestScore = useSelector(selectHighestScore);
+  const highScores = useSelector(selectHighScores);
 
   const [grid, setGrid] = useState<GridModel | null>(
     new GridModel({ cells: levelState.gridCells })
   );
+  Object.values(TimeFrame).forEach((timeFrame, index) => {
+    console.log("timeFrame", timeFrame, index);
+  });
 
   const [draggedBlock, setDraggedBlock] = useState<BlockModel | null>(null);
 
@@ -48,12 +53,23 @@ export default function Level() {
   const dispatch = useDispatch();
 
   const [isGameOver, setIsGameOver] = useState(false);
-  const [isHighestScore, setIsHighestScore] = useState(
-    levelState.isHighestScore
+  const [isHighScoreOfTimeFrame, setIsHighScoreOfTimeFrame] = useState(
+    levelState.isHighScoreOfTimeFrame
   );
 
   const handleGameOver = useCallback((isGameOver: boolean) => {
     if (isGameOver) setIsGameOver(true);
+  }, []);
+
+  const resetAllBlocks = useCallback(() => {
+    const newBlockIndexes = getRandomIndexes(3);
+    setBlockIndexes(newBlockIndexes);
+    const newHiddenBlockIds: number[] = [];
+    setHiddenBlockIds(newHiddenBlockIds);
+    showBlocks({
+      blocks: document.querySelectorAll(`.Block`) as NodeListOf<HTMLElement>,
+    });
+    return { newBlockIndexes, newHiddenBlockIds };
   }, []);
 
   useEffect(() => {
@@ -70,7 +86,7 @@ export default function Level() {
     if (!newGrid) {
       setGrid(null);
     } else {
-      checkIfGameIsOver({ grid: newGrid })
+      checkIfGameOver({ grid: newGrid })
         .then((isGameOver) => {
           handleGameOver(isGameOver);
         })
@@ -127,32 +143,33 @@ export default function Level() {
       let newScore = score;
       let newBlockIndexes = [...blockIndexes];
       let newHiddenBlockIds = [...hiddenBlockIds];
-      let newIsHighestScore = levelState.isHighestScore;
+      let newScoreIsHighScoreOfTimeFrame = levelState.isHighScoreOfTimeFrame;
 
       if (scoreIncrement > 0) {
         hideBlock({ element: draggedBlock.element });
 
         newScore = score + scoreIncrement;
         setScore(newScore);
-        if (newScore > highestScore) {
-          newIsHighestScore = true;
-          setIsHighestScore(newIsHighestScore);
-          dispatch(updateHighestScore(newScore));
-        }
+
+        let previousTimeframeIndex = -1;
+        Object.values(TimeFrame).forEach((timeFrame, timeFrameIndex) => {
+          const highScoreOfTimeFrame = highScores[timeFrame];
+          if (newScore > highScoreOfTimeFrame.score) {
+            if (timeFrameIndex > previousTimeframeIndex) {
+              newScoreIsHighScoreOfTimeFrame = timeFrame;
+              setIsHighScoreOfTimeFrame(timeFrame);
+            }
+          }
+          previousTimeframeIndex = timeFrameIndex;
+        });
+
+        dispatch(updateHighScores(newScore));
 
         const newHiddenBlocksCount = hiddenBlocksCount + 1;
         if (newHiddenBlocksCount === PARAMS.block.count) {
-          newBlockIndexes = getRandomIndexes(3);
-          setBlockIndexes(newBlockIndexes);
-
-          newHiddenBlockIds = [];
-          setHiddenBlockIds(newHiddenBlockIds);
-
-          showBlocks({
-            blocks: document.querySelectorAll(
-              `.Block`
-            ) as NodeListOf<HTMLElement>,
-          });
+          const result = resetAllBlocks();
+          newBlockIndexes = result.newBlockIndexes;
+          newHiddenBlockIds = result.newHiddenBlockIds;
         } else {
           if (draggedBlock.id != null) {
             newHiddenBlockIds.push(draggedBlock.id);
@@ -163,7 +180,7 @@ export default function Level() {
 
       const { cells: newGridCells } = grid.updateCells();
 
-      checkIfGameIsOver({ grid })
+      checkIfGameOver({ grid })
         .then((isGameOver) => {
           handleGameOver(isGameOver);
         })
@@ -174,7 +191,7 @@ export default function Level() {
       dispatch(
         updateLevelState({
           score: newScore,
-          isHighestScore: newIsHighestScore,
+          isHighScoreOfTimeFrame: newScoreIsHighScoreOfTimeFrame,
           blockIndexes: newBlockIndexes,
           gridCells: newGridCells,
           hiddenBlockIds: newHiddenBlockIds,
@@ -185,7 +202,7 @@ export default function Level() {
       grid,
       draggedBlock,
       score,
-      highestScore,
+      highScores,
       dispatch,
       hiddenBlocksCount,
       hiddenBlockIds,
@@ -196,7 +213,10 @@ export default function Level() {
   return (
     <>
       {isGameOver ? (
-        <GameOverDialog score={score} isHighestScore={isHighestScore} />
+        <GameOverDialog
+          score={score}
+          isHighestScoreOfTimeFrame={isHighScoreOfTimeFrame}
+        />
       ) : null}
 
       <Stack spacing={2}>
@@ -208,7 +228,7 @@ export default function Level() {
         >
           <Stack>
             <Typography variant="body2" textAlign={"center"}>
-              Votre score
+              Score
             </Typography>
             <Typography variant="h4" textAlign={"center"}>
               {score}
@@ -216,10 +236,19 @@ export default function Level() {
           </Stack>
           <Stack justifyContent={"center"}>
             <Typography variant="body2" textAlign={"center"}>
-              Record
+              <img
+                src={TrophySVG}
+                alt="Trophy"
+                style={{
+                  width: "1em",
+                  height: "auto",
+                  display: "inline-block",
+                }}
+              />
+              &nbsp;Record
             </Typography>
             <Typography variant="h4" textAlign={"center"}>
-              {highestScore}
+              {highScores.allTime.score}
             </Typography>
           </Stack>
         </Stack>
@@ -247,6 +276,9 @@ export default function Level() {
             </DndContext>
           ))}
         </Box>
+        <Button onClick={() => resetAllBlocks()} variant={"contained"}>
+          Réinitialiser les blocs
+        </Button>
       </Stack>
     </>
   );

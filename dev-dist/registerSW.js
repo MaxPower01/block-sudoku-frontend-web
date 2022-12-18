@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) navigator.serviceWorker.register('/block-sudoku-frontend-web/dev-sw.js?dev-sw', { scope: '/block-sudoku-frontend-web/', type: 'classic' })

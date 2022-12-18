@@ -5,22 +5,47 @@ import Confetti from "react-confetti";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import TrophySVG from "../../../assets/trophy-01.svg";
-import { Path } from "../../../utils/enums";
+import { Path, TimeFrame } from "../../../utils/enums";
 import { resetLevelState } from "../state/slice";
 
 export default function GameOverDialog(props: {
   score: number;
-  isHighestScore: boolean;
+  isHighestScoreOfTimeFrame: TimeFrame | null;
 }) {
+  const { score, isHighestScoreOfTimeFrame } = props;
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const handleButtonClick = () => {
     dispatch(resetLevelState());
     navigate(Path.Home);
   };
-
-  const { score, isHighestScore } = props;
+  const isHighestScore = isHighestScoreOfTimeFrame != null;
   const toggled = true;
+
+  let title = "Partie terminée";
+
+  if (isHighestScore) {
+    switch (isHighestScoreOfTimeFrame) {
+      case TimeFrame.AllTime:
+        title = "Nouveau meilleur score de tous les temps!";
+        break;
+      case TimeFrame.Year:
+        title = "Nouveau meilleur score de l'année!";
+        break;
+      case TimeFrame.Month:
+        title = "Nouveau meilleur score du mois!";
+        break;
+      case TimeFrame.Week:
+        title = "Nouveau meilleur score de la semaine!";
+        break;
+      case TimeFrame.Day:
+        title = "Nouveau meilleur score du jour!";
+        break;
+      default:
+        title = "Nouveau meilleur score!";
+        break;
+    }
+  }
 
   return (
     <XyzTransition appear xyz="fade ease-out-back">
@@ -41,8 +66,8 @@ export default function GameOverDialog(props: {
         >
           {isHighestScore ? (
             <Confetti
-              width={window.innerWidth}
-              height={window.innerHeight}
+              width={window.innerWidth - 50}
+              height={window.innerHeight - 50}
               recycle={false}
               gravity={0.05}
               numberOfPieces={1000}
@@ -67,7 +92,7 @@ export default function GameOverDialog(props: {
             </Box>
             <Stack>
               <Typography variant="h4" textAlign={"center"} gutterBottom>
-                {isHighestScore ? "Nouveau record!" : "Partie terminée"}
+                {title}
               </Typography>
               <Typography variant="body1" textAlign={"center"}>
                 Votre score:

@@ -223,59 +223,75 @@ export class GridModel {
 
     if (hoveredCellsToAnimate.length > 0) {
       hoveredCellsToAnimate.forEach((cell, index) => {
-        cell.classList.add("xyz-in");
+        // cell.classList.add("xyz-in");
       });
     }
 
     if (highlightedCellsToAnimate.length > 0) {
-      const delay = 50;
-      const totalAnimationDuration = highlightedCellsToAnimate.length * delay;
-      const middleIndex = Math.floor(highlightedCellsToAnimate.length / 2);
-      const middleCell = highlightedCellsToAnimate[middleIndex];
-      const snackbarElement = document.createElement("div");
-
-      highlightedCellsToAnimate.forEach((cell, index) => {
-        setTimeout(() => {
-          cell.setAttribute("data-filled", "false");
-          cell.classList.remove("Grid__Cell--highlighted");
-        }, index * delay);
+      this.triggerAnimationOn({
+        cells: highlightedCellsToAnimate,
+        scoreIncrement,
       });
-      setTimeout(() => {
-        snackbarElement.classList.add("Grid__Snackbar");
-        snackbarElement.style.position = "absolute";
-        snackbarElement.style.top = "50%";
-        snackbarElement.style.left = "50%";
-        snackbarElement.style.transform = "translate(-50%, -50%)";
-        snackbarElement.style.zIndex = "1";
-        snackbarElement.style.fontSize = "2rem";
-        snackbarElement.style.fontWeight = "bold";
-        snackbarElement.style.color = "white";
-        snackbarElement.style.textAlign = "center";
-        snackbarElement.style.pointerEvents = "none";
-        snackbarElement.style.textShadow = "0 0 0.5rem black";
-        snackbarElement.style.transition =
-          "opacity 0.5s ease-in-out, transform 0.5s ease-in-out";
-        snackbarElement.style.opacity = "0";
-        snackbarElement.innerText = `+${scoreIncrement}`;
-        middleCell.appendChild(snackbarElement);
-        const initialOpacityDelay = 50;
-        const removeOpacityDelay = 1000;
-        setTimeout(() => {
-          snackbarElement.style.opacity = "1";
-        }, initialOpacityDelay);
-        setTimeout(() => {
-          snackbarElement.style.opacity = "0";
-          snackbarElement.style.transform = "translate(-50%, -100px)";
-          setTimeout(() => {
-            middleCell.removeChild(snackbarElement);
-          }, 500);
-        }, removeOpacityDelay + initialOpacityDelay);
-      }, totalAnimationDuration);
     }
 
     return {
       scoreIncrement,
     };
+  }
+
+  private triggerAnimationOn(params: {
+    cells: HTMLElement[];
+    scoreIncrement: number;
+  }) {
+    const { cells, scoreIncrement } = params;
+    const delay = 25;
+    const totalAnimationDuration = cells.length * delay;
+    const middleIndex = Math.floor(cells.length / 2);
+    const middleCell = cells[middleIndex];
+    const snackbarElement = document.createElement("div");
+
+    cells.forEach((cell, index) => {
+      cell.setAttribute("data-filled", "false");
+      cell.classList.remove("Grid__Cell--highlighted");
+      const frontLayerContent = cell.querySelector(
+        ".Cell__Content--front-layer"
+      ) as HTMLElement;
+      const clone = frontLayerContent.cloneNode(true) as HTMLElement;
+      cell.appendChild(clone);
+      clone.style.zIndex = "100";
+      clone.style.opacity = "1";
+      clone.style.transition =
+        "opacity 0.35s ease-in-out, transform 0.35s ease-in-out";
+      setTimeout(() => {
+        clone.style.transform = "translate(-50%, -50%) scale(0.5)";
+        clone.style.opacity = "0";
+        setTimeout(() => {
+          cell.removeChild(clone);
+        }, 350);
+      }, index * delay);
+    });
+
+    setTimeout(() => {
+      snackbarElement.classList.add("ScoreUpdateSnackbar");
+      snackbarElement.innerText = `+${scoreIncrement}`;
+      middleCell.appendChild(snackbarElement);
+
+      const showDelay = delay;
+      const hideDelay = 1000;
+
+      setTimeout(() => {
+        snackbarElement.classList.add("ScoreUpdateSnackbar--visible");
+      }, showDelay);
+
+      setTimeout(() => {
+        snackbarElement.classList.add("ScoreUpdateSnackbar--hidden");
+        snackbarElement.classList.remove("ScoreUpdateSnackbar--visible");
+
+        setTimeout(() => {
+          middleCell.removeChild(snackbarElement);
+        }, 500);
+      }, hideDelay + showDelay);
+    }, totalAnimationDuration);
   }
 
   public setHighlightedCells() {

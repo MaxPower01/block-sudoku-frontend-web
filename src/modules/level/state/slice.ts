@@ -8,7 +8,7 @@ import LevelState from "./LevelState";
 function getDefaultState(): LevelState {
   return {
     score: 0,
-    isHighestScore: false,
+    isHighScoreOfTimeFrame: null,
     gridCells: new GridModel().cells ?? [],
     blockIndexes: getRandomIndexes(3),
     hiddenBlockIds: [],
@@ -38,7 +38,14 @@ function resetLocalState() {
 function getInitialState(): LevelState {
   try {
     const localState = getLocalState();
-    if (localState == null) {
+    if (
+      localState == null ||
+      localState.score == null ||
+      localState.gridCells == null ||
+      localState.blockIndexes == null ||
+      localState.hiddenBlockIds == null ||
+      localState.isHighScoreOfTimeFrame === undefined
+    ) {
       throw new Error(
         `Error while recovering ${LocalStorageKey.LevelState} in local storage. Resetting local state and returning default state.`
       );
@@ -70,6 +77,7 @@ export const slice = createSlice({
       state.gridCells = action.payload.gridCells;
       state.blockIndexes = action.payload.blockIndexes;
       state.hiddenBlockIds = action.payload.hiddenBlockIds;
+      state.isHighScoreOfTimeFrame = action.payload.isHighScoreOfTimeFrame;
       saveState(state);
     },
     resetLevelState: (state) => {
@@ -78,6 +86,7 @@ export const slice = createSlice({
       state.gridCells = defaultState.gridCells;
       state.blockIndexes = defaultState.blockIndexes;
       state.hiddenBlockIds = defaultState.hiddenBlockIds;
+      state.isHighScoreOfTimeFrame = defaultState.isHighScoreOfTimeFrame;
       saveState(state);
     },
   },
