@@ -14,6 +14,7 @@
   -webkit-text-size-adjust: 100%;
   --bodyBackgroundColor: #242424;
   background-color: var(--bodyBackgroundColor);
+
 }
 
 body {
@@ -28,7 +29,13 @@ body {
 #root {
   width: 100%;
   height: 100%;
+  display: flex;
+  flex-direction: column;
   background-color: var(--bodyBackgroundColor);
+}
+
+main {
+  flex-grow: 1;
 }
 
 @mixin highlighted-cell-content {

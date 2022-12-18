@@ -276,8 +276,11 @@ export default function Level() {
             </DndContext>
           ))}
         </Box>
-        <Button onClick={() => resetAllBlocks()} variant={"contained"}>
+        <Button onClick={() => resetAllBlocks()} variant={"outlined"}>
           Réinitialiser les blocs
+        </Button>
+        <Button onClick={() => setIsGameOver(true)} variant={"outlined"}>
+          Terminer la partie
         </Button>
       </Stack>
     </>

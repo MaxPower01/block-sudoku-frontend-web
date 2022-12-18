@@ -4,6 +4,7 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
+import { useTheme } from "@mui/material/styles";
 import * as React from "react";
 import { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -22,6 +23,7 @@ export default function Home() {
   const highScores = useSelector(selectHighScores);
   const hasLevelInProgress = useSelector(selectHasLevelInProgress);
   const [newGameDialogOpened, setNewGameDialogOpened] = React.useState(false);
+  const theme = useTheme();
 
   const startNewGame = () => {
     dispatch(resetLevelState());
@@ -48,25 +50,29 @@ export default function Home() {
         </Typography>
         <Stack spacing={1}>
           <Typography variant="body2" textAlign={"center"}>
-            &nbsp;Meilleur score de tous les temps
+            Meilleur score de tous les temps
           </Typography>
-          <Typography variant="h4" textAlign={"center"}>
+          <Stack
+            spacing={1}
+            direction={"row"}
+            alignItems="center"
+            justifyContent={"center"}
+          >
             {highScores.allTime.score > 0 ? (
-              <>
-                <img
-                  src={TrophySVG}
-                  alt="Trophy"
-                  style={{
-                    width: "1em",
-                    height: "auto",
-                    display: "inline-block",
-                  }}
-                />
-                &nbsp;
-              </>
+              <img
+                src={TrophySVG}
+                alt="Trophy"
+                style={{
+                  width: theme.typography.h4.fontSize,
+                  height: "auto",
+                  display: "inline-block",
+                }}
+              />
             ) : null}
-            {highScores.allTime.score}
-          </Typography>
+            <Typography variant="h4" textAlign={"center"}>
+              {highScores.allTime.score}
+            </Typography>
+          </Stack>
         </Stack>
         <Stack spacing={1}>
           {hasLevelInProgress ? (

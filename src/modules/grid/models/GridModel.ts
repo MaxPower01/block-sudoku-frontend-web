@@ -258,7 +258,7 @@ export class GridModel {
       ) as HTMLElement;
       const clone = frontLayerContent.cloneNode(true) as HTMLElement;
       cell.appendChild(clone);
-      clone.style.zIndex = "100";
+      clone.style.zIndex = "2";
       clone.style.opacity = "1";
       clone.style.transition =
         "opacity 0.35s ease-in-out, transform 0.35s ease-in-out";

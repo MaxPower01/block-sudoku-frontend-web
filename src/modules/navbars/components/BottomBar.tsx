@@ -23,7 +23,7 @@ export default function BottomBar() {
   };
   return (
     <AppBar
-      position="fixed"
+      position="sticky"
       color="primary"
       sx={{ top: "auto", bottom: 0 }}
       component="footer"

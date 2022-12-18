@@ -15,7 +15,7 @@ export default function TopBar() {
     <AppBar
       position="sticky"
       component="header"
-      sx={{ background: "transparent" }}
+      sx={{ background: "transparent", top: 0, bottom: "auto" }}
       elevation={0}
     >
       <Container maxWidth={CSSBreakpoint.Large}>

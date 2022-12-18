@@ -65,13 +65,29 @@ export default function GameOverDialog(props: {
           }}
         >
           {isHighestScore ? (
-            <Confetti
-              width={window.innerWidth - 50}
-              height={window.innerHeight - 50}
-              recycle={false}
-              gravity={0.05}
-              numberOfPieces={1000}
-            />
+            <Box
+              sx={{
+                position: "absolute",
+                top: 0,
+                left: 0,
+                width: "100%",
+                height: "100%",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                overflow: "hidden",
+              }}
+            >
+              <Confetti
+                width={window.innerWidth}
+                height={window.innerHeight}
+                recycle={false}
+                gravity={0.05}
+                numberOfPieces={1000}
+                initialVelocityY={10}
+                tweenDuration={10000}
+              />
+            </Box>
           ) : null}
           <Stack spacing={4}>
             <Box
@@ -91,13 +107,13 @@ export default function GameOverDialog(props: {
               />
             </Box>
             <Stack>
-              <Typography variant="h4" textAlign={"center"} gutterBottom>
+              <Typography variant="h6" textAlign={"center"} gutterBottom>
                 {title}
               </Typography>
-              <Typography variant="body1" textAlign={"center"}>
+              {/* <Typography variant="body2" textAlign={"center"}>
                 Votre score:
-              </Typography>
-              <Typography variant="h4" textAlign={"center"}>
+              </Typography> */}
+              <Typography variant="h2" textAlign={"center"}>
                 {score}
               </Typography>
             </Stack>

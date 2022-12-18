@@ -27,8 +27,6 @@ export default function App() {
               alignItems: "center",
               justifyContent: "center",
               marginBottom: 8,
-              height: `calc(100% - 56px)`,
-              paddingBottom: "56px",
             }}
           >
             <Routes>
